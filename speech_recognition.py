@@ -8,7 +8,6 @@ Original file is located at
 """
 # impoort libraries.
 import os
-import pickle
 
 import librosa
 import librosa.display
@@ -112,27 +111,22 @@ if __name__ == '__main__':
 
     classifier = LogisticRegression()
     classifier.fit(x_train, y_train)
-    pickle.dump(classifier, open("LR_model.sav", 'wb'))
     sound_prediction_LR = classifier.predict(x_test)
 
     classifier = GaussianNB()
     classifier.fit(x_train, y_train)
-    pickle.dump(classifier, open("GNB_model.sav", 'wb'))
     sound_prediction_GNB = classifier.predict(x_test)
 
     classifier = RandomForestClassifier(n_estimators=10, criterion='entropy', random_state=0)
     classifier.fit(x_train, y_train)
-    pickle.dump(classifier, open("RF_model.sav", 'wb'))
     sound_prediction_RF = classifier.predict(x_test)
 
     classifier = SVC(kernel='linear', random_state=0)
     classifier.fit(x_train, y_train)
-    pickle.dump(classifier, open("SVC_model.sav", 'wb'))
     sound_prediction_SVC = classifier.predict(x_test)
 
     classifier = KNeighborsClassifier(n_neighbors=2, metric='minkowski', p=2)
     classifier.fit(x_train, y_train)
-    pickle.dump(classifier, open("KNN_model.sav", 'wb'))
     sound_prediction_KNN = classifier.predict(x_test)
 
     print_confusion_matrix(y_test, sound_prediction_LR, "LR")
@@ -142,7 +136,3 @@ if __name__ == '__main__':
     print_confusion_matrix(y_test, sound_prediction_KNN, "KNN")
 
 
-def load_model(file_name, x_test, y_test):
-    loaded_model = pickle.load(open(file_name, 'rb'))
-    sound_prediction = loaded_model.predict(x_test)
-    print_confusion_matrix(y_test, sound_prediction, "##")
